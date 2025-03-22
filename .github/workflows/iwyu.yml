@@ -3,18 +3,21 @@ name: IWYU
 
 on:
   push:
-    branches: [ master ]
+    branches: [main, clang-tidy]
   pull_request:
-    branches: [ master ]
+    branches: [main]
 
 jobs:
-  checkout-and-check-formatting:
+  checkout-and-iwyu:
+    container: viktorklochkov/ubuntu-llvm-iwyu:19
     runs-on: ubuntu-latest
 
     steps:
-    - name: include what you use Github action
-      uses: EmilGedda/include-what-you-use-action@v1.0
-      with:
-        compilation-database-path: '.'
-        output-format: 'iwyu' # Or 'clang'
-        no-error: 'false'
+    - uses: actions/checkout@v4
+
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/build -DBUILD_TESTS=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+    - name: Run IWYU
+      run: iwyu_tool.py -p ${{github.workspace}}/build  main.* -- -Xiwyu --error
+

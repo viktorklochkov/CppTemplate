@@ -5,23 +5,27 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(CppTemplate main.cpp)
 
-include(FetchContent)
-FetchContent_Declare(
-  googletest
-  URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
-)
-FetchContent_MakeAvailable(googletest)
+if(BUILD_TESTS)
 
-enable_testing()
+  include(FetchContent)
+  FetchContent_Declare(
+    googletest
+    URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
+  )
+  FetchContent_MakeAvailable(googletest)
 
-add_executable(
-  CppTemplateTest
-  main.test.cpp
-)
-target_link_libraries(
-  CppTemplateTest
-  GTest::gtest_main
-)
+  enable_testing()
 
-include(GoogleTest)
-gtest_discover_tests(CppTemplateTest)
+  add_executable(
+    CppTemplateTest
+    main.test.cpp
+  )
+  target_link_libraries(
+    CppTemplateTest
+    GTest::gtest_main
+  )
+
+  include(GoogleTest)
+  gtest_discover_tests(CppTemplateTest)
+
+endif()

@@ -1,5 +1,6 @@
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
+#include <string>
 
-TEST(main, test1) {
-  EXPECT_TRUE(true);
+TEST(main, greeting) {
+  EXPECT_EQ("Hello, World!\n", "Hello, World!\n");
 }

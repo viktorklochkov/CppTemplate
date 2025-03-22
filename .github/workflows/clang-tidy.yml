@@ -1,24 +1,23 @@
-# Run clang-tidy
-name: Clang-tidy
-
+name: clang-tidy
 on:
-  push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
+    branches: [main]
+  push:
+    branches: [main]
 
 jobs:
-  checkout-and-check-formatting:
+  checkout-and-clang-tidy:
+    container: xianpengshen/clang-tools:19
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
+
+    - name: Install cmake & g++
+      run: apt-get update && apt-get install -y cmake g++
+
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/build -DBUILD_TESTS=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
     - name: Run clang-tidy
-      uses: HorstBaerbel/action-clang-tidy@1.2
-      # These are optional (defaults displayed)
-      with:
-        scandir: '.'
-        builddir: 'build'
-        excludedirs: ''
-        extensions: 'c,h,C,H,cpp,hpp,cc,hh,c++,h++,cxx,hxx'
-        cmakeoptions: ''
+      run: clang-tidy -p ${{github.workspace}}/build *.cpp

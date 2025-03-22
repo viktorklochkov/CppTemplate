@@ -1,8 +1,9 @@
 name: Clang Format Checker
 on:
   push:
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 jobs:
   clang-format-checking:
     runs-on: ubuntu-latest
