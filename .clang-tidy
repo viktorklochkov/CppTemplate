@@ -6,7 +6,12 @@ Checks: >
   performance-*,
   readability-*,
   bugprone-*,
-  -modernize-use-trailing-return-type
+  cert-*,
+  misc-*,
+  google-*,
+  llvm-*,
+  -modernize-use-trailing-return-type,
+  -misc-include-cleaner,
 
 WarningsAsErrors: '*'
 
@@ -17,9 +22,5 @@ CheckOptions:
     value: camelBack
   - key: readability-identifier-naming.VariableCase
     value: lower_case
-  - key: modernize-use-nullptr.NullMacros
-    value: 'NULL'
-  - key: performance-unnecessary-value-param.AllowedTypes
-    value: 'std::string;std::vector'
 
 FormatStyle:  file
